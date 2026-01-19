@@ -2,6 +2,11 @@ import "./App.css";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object({});
+
 export default function App() {
   const {
     control,
@@ -16,6 +21,7 @@ export default function App() {
       categoria: "",
       descricao: "",
     },
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data) => {
