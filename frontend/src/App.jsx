@@ -8,7 +8,7 @@ export default function App() {
     handleSubmit,
     reset,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       nomeCurso: "",
@@ -94,7 +94,9 @@ export default function App() {
         />
 
         {/* Botão */}
-        <button type="submit">Cadastrar</button>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Enviando ..." : "Cadastrar" }
+        </button>
       </form>
     </div>
   );
