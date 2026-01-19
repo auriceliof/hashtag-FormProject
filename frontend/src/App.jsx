@@ -3,7 +3,13 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function App() {
-  const { control, handleSubmit, reset, register } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       nomeCurso: "",
       data: "",
@@ -38,12 +44,15 @@ export default function App() {
           })}
         />
 
-        <span className="error">O nome do curso é obrigatório</span>
+        {errors.nomeCurso && (
+          <span className="error">{errors.nomeCurso.message}</span>
+        )}
 
         {/* Campo de data de início */}
         <Controller
           control={control}
           name="data"
+          rules={{required: true}}
           render={({ field }) => (
             <input
               type="date"
@@ -53,6 +62,10 @@ export default function App() {
             />
           )}
         />
+
+          {errors.data && (
+          <span className="error">A data de início é obrigatório</span>
+        )}
 
         {/* Seleção de categoria */}
         <Controller
