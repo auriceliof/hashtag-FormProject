@@ -18,7 +18,8 @@ export default function App() {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log(data);
     reset();
   };
