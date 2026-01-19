@@ -5,7 +5,30 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-const schema = yup.object({});
+const schema = yup.object({
+  nomeCurso: yup
+  .string()
+  .required("O nome do curso é obrigatório")
+  .min(3, "O nome deve conter pelo menos 3 caracteres")
+  .max(50, "O nome deve ter no máximo 50 caracteres"),
+
+  data: yup
+  .date("Formato de data inválido")
+  .required("A data de início é obrigatória")
+  .typeError("Insira uma data válida"),
+
+  categoria: yup
+  .string()
+  .required("Escolha uma categoria")
+  .oneOf(["programação","design","marketing","outros"], "Categoria Inválida"),
+
+  descricao: yup
+  .string()
+  .required("A descrição é obrigatório")
+  .min(10, "A descrição deve conter pelo menos 10 caracteres")
+  .max(70, "A descrição deve ter no máximo 70 caracteres"),
+
+});
 
 export default function App() {
   const {
@@ -35,22 +58,11 @@ export default function App() {
       <h1>Cadastro de Curso</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <Controller
-          control={control}
-          name="nomeCurso"
-          render={(field) => (
-            <input type="text" placeholder="Nome do curso" {...field} />
-          )}
-        /> */}
-
         <input
           type="text"
           placeholder="Nome do curso"
-          {...register("nomeCurso", {
-            required: "O nome do curso é obrigatório",
-          })}
+          {...register("nomeCurso")}
         />
-
         {errors.nomeCurso && (
           <span className="error">{errors.nomeCurso.message}</span>
         )}
@@ -59,7 +71,6 @@ export default function App() {
         <Controller
           control={control}
           name="data"
-          rules={{required: true}}
           render={({ field }) => (
             <input
               type="date"
@@ -69,8 +80,7 @@ export default function App() {
             />
           )}
         />
-
-          {errors.data && (
+        {errors.data && (
           <span className="error">A data de início é obrigatório</span>
         )}
 
@@ -90,6 +100,9 @@ export default function App() {
             </select>
           )}
         />
+        {errors.categoria && (
+          <span className="error">{errors.categoria.message}</span>
+        )}
 
         {/* Campo de descrição */}
         <Controller
@@ -99,6 +112,9 @@ export default function App() {
             <textarea placeholder="Descrição do curso" rows={4} {...field} />
           )}
         />
+        {errors.descricao && (
+          <span className="error">{errors.descricao.message}</span>
+        )}
 
         {/* Botão */}
         <button type="submit" disabled={isSubmitting}>
