@@ -3,11 +3,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function App() {
-  //useForm hook principal que inicia o formulário
-  // Aqui definimos os valores padrão do formulário e pegamos os métodos necessários
-  // control é usado para controlar os componentes/elementos do formulário
-  // handleSubmit é uma função que lida com o envio do formulario
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, register } = useForm({
     defaultValues: {
       nomeCurso: "",
       data: "",
@@ -16,27 +12,30 @@ export default function App() {
     },
   });
 
-  //Função para lidar com o envio do formulário
-  //Aqui apenas logamos os dados no console
-  // Em um caso real, você poderia enviar esses dados para um servidor
   const onSubmit = (data) => {
     console.log(data);
-    reset(); // Reseta os campos do formulário após o envio
+    reset();
   };
 
   return (
     <div className="form-container">
       <h1>Cadastro de Curso</h1>
-      {/* O handleSubmit é passado para o eveno onSubmit do formulário, possui o prórpio preventDefault embutido */}
+
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* O Controller é usado para conectar o campo de entrada do nome do curso ao React Hook Form */}
-        <Controller
+        {/* <Controller
           control={control}
           name="nomeCurso"
-          render={({ field }) => (
-            <input placeholder="Nome do curso" 
-            {...field}/>
+          render={(field) => (
+            <input type="text" placeholder="Nome do curso" {...field} />
           )}
+        /> */}
+
+        <input
+          type="text"
+          placeholder="Nome do curso"
+          {...register("nomeCurso", {
+            required: "O nome do curso é obrigatório",
+          })}
         />
 
         <span className="error">O nome do curso é obrigatório</span>
@@ -61,7 +60,7 @@ export default function App() {
           name="categoria"
           render={({ field }) => (
             <select {...field}>
-              <option value="" disabled >
+              <option value="" disabled>
                 Escolha a categoria...
               </option>
               <option value="programacao">Programação</option>
@@ -77,12 +76,11 @@ export default function App() {
           control={control}
           name="descricao"
           render={({ field }) => (
-            <textarea placeholder="Descrição do curso" rows={4} {...field}/>
+            <textarea placeholder="Descrição do curso" rows={4} {...field} />
           )}
         />
 
         {/* Botão */}
-        {/* <button type="submit" onClick={onSubmit}>Cadastrar</button> */}
         <button type="submit">Cadastrar</button>
       </form>
     </div>
